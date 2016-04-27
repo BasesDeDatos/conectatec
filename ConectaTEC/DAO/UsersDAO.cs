@@ -13,12 +13,13 @@ namespace ConectaTEC.DAO
     public interface IUsersDAO
     {
         Task<IEnumerable<UsersModel>> getUsers();
+        void insertUser(string pUsername, string pPassword);
     }
 
     public class UsersDAO : IUsersDAO
     {
-        protected readonly ISession session;
-        protected readonly IMapper mapper;
+        protected ISession session;
+        protected IMapper mapper;
 
         public UsersDAO()
         {
@@ -30,6 +31,15 @@ namespace ConectaTEC.DAO
         public async Task<IEnumerable<UsersModel>> getUsers()
         {
             return await mapper.FetchAsync<UsersModel>();
+        }
+
+        public void insertUser(string pUsername, string pPassword)
+        {
+            var newUser = new UsersModel {
+                                            username = pUsername,
+                                            password = pPassword
+                                         };
+            mapper.InsertAsync(newUser);
         }
     }
 }

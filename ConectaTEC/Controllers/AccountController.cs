@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ConectaTEC.Models;
+using ConectaTEC.DAO;
 
 namespace ConectaTEC.Controllers
 {
@@ -18,6 +19,8 @@ namespace ConectaTEC.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
+        private static IUsersDAO dao;
+
         public AccountController()
         {
         }
@@ -26,6 +29,18 @@ namespace ConectaTEC.Controllers
         {
             UserManager = userManager;
             SignInManager = signInManager;
+        }
+
+        protected IUsersDAO usersDao
+        {
+            get
+            {
+                if (dao == null)
+                {
+                    dao = new UsersDAO();
+                }
+                return dao;
+            }
         }
 
         public ApplicationSignInManager SignInManager
@@ -151,8 +166,16 @@ namespace ConectaTEC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                //var user = new UsersModel { username = model.Email, password = model.Password };
+                try {
+                    usersDao.insertUser(model.Email, model.Password);
+                }
+
+                catch (Exception ex)
+                {
+                }
+                
+                /*
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
@@ -166,6 +189,7 @@ namespace ConectaTEC.Controllers
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
+                */
             }
 
             // If we got this far, something failed, redisplay form
