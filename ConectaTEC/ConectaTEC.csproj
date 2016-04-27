@@ -208,6 +208,11 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="DAO\CassandraDAO.cs" />
+    <Compile Include="DAO\TweetsDAO.cs" />
+    <Compile Include="DAO\TimelineDAO.cs" />
+    <Compile Include="DAO\UserlineDAO.cs" />
+    <Compile Include="DAO\FriendsDAO.cs" />
+    <Compile Include="DAO\FollowersDAO.cs" />
     <Compile Include="DAO\UsersDAO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
