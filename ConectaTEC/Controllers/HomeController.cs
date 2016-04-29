@@ -13,6 +13,11 @@ namespace ConectaTEC.Controllers
             return View();
         }
 
+        public ActionResult Perfil()
+        {
+            return View();
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
