@@ -4,7 +4,11 @@
     ViewBag.Title = "Log in";
 }
 
-<h2>@ViewBag.Title.</h2>
+<div class="jumbotron">
+    <h1>Bienvenido a ConectaTEC</h1>
+    <p class="lead">Aqui ponemos una descripcion.</p>
+</div>
+
 <div class="row">
     <div class="col-md-8">
         <section id="loginForm">
@@ -53,7 +57,11 @@
     </div>
     <div class="col-md-4">
         <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+            <h4>ConectaTEC.</h4>
+            <hr>
+            <p>
+            Este es un prototipo para demostracion
+            </p>
         </section>
     </div>
 </div>
