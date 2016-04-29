@@ -20,11 +20,19 @@ namespace ConectaTEC.Controllers
         
         public ActionResult Perfil()
         {
-            Row user =  session.Execute("select * from users where username = 'jeffreya12'").First();
-            ViewData["username"] = user["username"].ToString();
-            ViewData["name"] = user["name"].ToString();
-            ViewData["description"] = user["description"].ToString();
-            return View();
+            try
+            {
+                Row user = session.Execute("select * from users where username = 'caco26i'").First();
+                ViewData["username"] = user["username"].ToString();
+                ViewData["email"] = user["email"].ToString();
+                ViewData["name"] = user["name"].ToString();
+                ViewData["description"] = user["description"].ToString();
+                return View();
+            }
+            catch
+            {
+                return View("Index");
+            }
         }
     }
 }

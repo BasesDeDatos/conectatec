@@ -2,7 +2,8 @@ CREATE TABLE users (
     username text PRIMARY KEY,
     name text,
     description text,
-    password text
+    password text,
+    email text
 );
 
 CREATE TABLE friends (
