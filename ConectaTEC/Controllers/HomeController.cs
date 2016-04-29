@@ -18,11 +18,12 @@ namespace ConectaTEC.Controllers
             return View();
         }
         
-        public ActionResult Perfil()
+        public ActionResult Perfil(string username)
         {
             try
             {
-                Row user = session.Execute("select * from users where username = 'caco26i'").First();
+                //Home/Perfil?username='caco26i'
+                Row user = session.Execute("select * from users where username = " + username).First();
                 ViewData["username"] = user["username"].ToString();
                 ViewData["email"] = user["email"].ToString();
                 ViewData["name"] = user["name"].ToString();
