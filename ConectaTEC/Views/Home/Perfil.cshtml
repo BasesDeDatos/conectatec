@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Perfil";
 }
 
@@ -15,7 +14,17 @@
     </div>
     <div class="col-md-8">
         <h2>Feed</h2>
-        <p>Aca podemos poner el feed.</p>
+        @try
+        {
+            foreach (var tweet in ViewData["feed"] as List<ConectaTEC.Models.TweetsModel>)
+            {
+                <h1>@tweet.body</h1>
+            }
+        }
+        catch
+        {
+            <p>No hay publicaciones todavia</p>
+        }
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Ver mas &raquo;</a></p>
     </div>
 </div>

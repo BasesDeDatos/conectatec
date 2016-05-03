@@ -1,0 +1,34 @@
+﻿@model IEnumerable<ConectaTEC.Models.UsersModel>
+
+@{
+    ViewBag.Title = "UserList";
+}
+
+<h2>Lista de usuarios</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Nombre
+        </th>
+        <th>
+            Email
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var user in ViewData["userList"] as List<ConectaTEC.Models.UsersModel>) {
+    <tr>
+        <td>
+            @user.name
+        </td>
+        <td>
+            @user.email
+        </td>
+        <td>
+            <a href="/Home/Perfil?username='@user.username'">Ver perfil</a>
+        </td>
+    </tr>
+}
+
+</table>

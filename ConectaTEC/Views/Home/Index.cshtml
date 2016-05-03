@@ -21,7 +21,15 @@
         </div>
         <hr>
         <h2>Feed</h2>
-        <p>Aca podemos poner el feed.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Ver mas &raquo;</a></p>
+        @foreach (var tweet in ViewData["tweetList"] as List<ConectaTEC.Models.TweetsModel>)
+        {
+            <div class="col-md-8">
+                <h1>@tweet.body.ToString()</h1>
+            </div>
+            <div class="col-md-4">
+                <a href="/Home/Perfil?username='@tweet.username'">@tweet.username</a>
+            </div>
+        }
     </div>
+    <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Ver mas &raquo;</a></p>
 </div>
