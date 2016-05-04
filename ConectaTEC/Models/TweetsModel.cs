@@ -14,5 +14,6 @@ namespace ConectaTEC.Models
         public string tweet_id { get; set; }
         public string body { get; set; }
         public string username { get; set; }
+        public string time { get; set; }
     }
 }

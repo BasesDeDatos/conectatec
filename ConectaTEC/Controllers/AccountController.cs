@@ -10,12 +10,18 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ConectaTEC.Models;
 using ConectaTEC.DAO;
+using System.Collections.Generic;
+using Cassandra;
+using System.Diagnostics;
 
 namespace ConectaTEC.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private static Cluster cluster = Cluster.Builder().AddContactPoint("127.0.0.1").Build();
+        private static ISession session = cluster.Connect("test01");
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -71,7 +77,7 @@ namespace ConectaTEC.Controllers
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
-        {
+        {            
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -90,16 +96,30 @@ namespace ConectaTEC.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            RowSet query = new RowSet();
+
+            List<Row> userList = new List<Row>();
+
+            Debug.WriteLine("select * from users where email = " + model.Email + " and password = " + model.Password + " allow filtering");
+
+            try
             {
-                case SignInStatus.Success:
+                userList = session.Execute("select * from users where email = '" + model.Email + "' and password = '" + model.Password + "' allow filtering").ToList();
+            }
+            catch { }
+
+            int userCount = userList.Count;
+
+            Debug.WriteLine(userCount);
+
+            //var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+
+            switch (userCount)
+            {
+                case 1: //Sucess
+                    Session["active_user"] = userList[0]["username"];
                     return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
+                case 0:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);

@@ -209,10 +209,6 @@
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="DAO\CassandraDAO.cs" />
     <Compile Include="DAO\TweetsDAO.cs" />
-    <Compile Include="DAO\TimelineDAO.cs" />
-    <Compile Include="DAO\UserlineDAO.cs" />
-    <Compile Include="DAO\FriendsDAO.cs" />
-    <Compile Include="DAO\FollowersDAO.cs" />
     <Compile Include="DAO\UsersDAO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -220,11 +216,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\FollowersModel.cs" />
-    <Compile Include="Models\FriendsModel.cs" />
-    <Compile Include="Models\TimelineModel.cs" />
     <Compile Include="Models\TweetsModel.cs" />
-    <Compile Include="Models\UserlineModel.cs" />
     <Compile Include="Models\UsersModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
