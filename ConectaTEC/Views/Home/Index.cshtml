@@ -11,12 +11,12 @@
         <!--p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p-->
     </div>
     <div class="col-md-8">
-        @using (Ajax.BeginForm("Index", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("Index", "Home", new { }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             <div>
                 <br>
                 <div class="col-md-8">
-                    <input class="col-md-12" type="text" name="tweet" placeholder="Que esta pasando?" />
+                    <textarea class="form-control" name="tweet" placeholder="Que esta pasando?" />
                 </div>
                 <div class="col-md-4">
                     <input type="submit" value="Publicar" class="btn btn-default" />
