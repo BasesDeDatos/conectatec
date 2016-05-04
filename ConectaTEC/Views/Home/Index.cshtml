@@ -4,19 +4,22 @@
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Aca el nombre</h2>
+        <br>
+        <h2>@Session["active_name"]</h2>
         <p>
-            Aca podemos poner una ficha del perfil
+            <a href="/Home/Perfil?username=@Session["active_user"]">@Session["active_user"]</a>
         </p>
         <!--p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p-->
     </div>
     <div class="col-md-8">
-        @using (Html.BeginForm("Index", "Home", new { }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        <br>
+        @using (Html.BeginForm("Publicar", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
-            <div>
+            @Html.AntiForgeryToken()
+            <div class="row">
                 <br>
                 <div class="col-md-8">
-                    <textarea class="form-control" name="tweet" placeholder="Que esta pasando?" />
+                    <textarea class="form-control" name="body" rows="4" cols="100"> </textarea>
                 </div>
                 <div class="col-md-4">
                     <input type="submit" value="Publicar" class="btn btn-default" />
@@ -24,16 +27,22 @@
             </div>
         }
         <hr>
-        <h2>Feed</h2>
-        @foreach (var tweet in ViewData["tweetList"] as List<ConectaTEC.Models.TweetsModel>)
-        {
-            <div class="col-md-8">
-                <h1>@tweet.body.ToString()</h1>
-            </div>
-            <div class="col-md-4">
-                <a href="/Home/Perfil?username='@tweet.username'">@tweet.username</a>
-            </div>
-        }
+        <h4>Feed</h4>
+        <div class="row">
+            @foreach (var tweet in ViewData["tweetList"] as List<ConectaTEC.Models.TweetsModel>)
+            {
+                <div class="col-md-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a href="/Home/Perfil?username=@tweet.username">@tweet.username</a>
+                            <span class="pull-right">@tweet.time</span>
+                        </div>
+                        <div class="panel-body">
+                            <h2>@tweet.body.ToString()</h2>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
-    <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Ver mas &raquo;</a></p>
 </div>

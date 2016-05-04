@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -44,6 +45,58 @@ namespace ConectaTEC.Controllers
             }
         }
 
+        public ActionResult MiPerfil()
+        {
+            var usernameSession = Session["active_user"] ?? String.Empty;
+            if (!String.IsNullOrEmpty(usernameSession.ToString()))
+            {
+                string username = usernameSession.ToString();
+                try
+                {
+                    //Home/Perfil?username='username'
+                    Row user = session.Execute("select * from users where username = '" + username + "'").First();
+
+                    List<Row> feed = new List<Row>();
+                    var tweets = new List<TweetsModel>();
+
+                    try
+                    {
+                        feed = session.Execute("select * from tweets where username = '" + username + "' allow filtering").ToList();
+                    }
+                    catch { }
+
+                    foreach (Row tweet in feed)
+                    {
+                        TweetsModel tweetData = new TweetsModel();
+
+                        tweetData.username = tweet["username"].ToString();
+                        tweetData.body = tweet["body"].ToString();
+                        tweetData.tweet_id = tweet["tweet_id"].ToString();
+                        tweetData.time = tweet["time"].ToString();
+
+                        tweets.Add(tweetData);
+                    }
+
+                    tweets.Reverse();
+
+                    ViewData["username"] = user["username"].ToString();
+                    ViewData["email"] = user["email"].ToString();
+                    ViewData["name"] = user["name"].ToString();
+                    ViewData["description"] = user["description"].ToString();
+                    ViewData["feed"] = tweets;
+                    return View("Perfil");
+                }
+                catch
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                return RedirectToAction("../Account/Login");
+            }
+        }
+
         public ActionResult Perfil(string username)
         {
             var usernameSession = Session["active_user"] ?? String.Empty;
@@ -52,14 +105,14 @@ namespace ConectaTEC.Controllers
                 try
                 {
                     //Home/Perfil?username='username'
-                    Row user = session.Execute("select * from users where username = " + username).First();
+                    Row user = session.Execute("select * from users where username = '" + username + "'").First();
 
                     List<Row> feed = new List<Row>();
                     var tweets = new List<TweetsModel>();
 
                     try
                     {
-                        feed = session.Execute("select * from tweets where username = " + username + " allow filtering").ToList();
+                        feed = session.Execute("select * from tweets where username = '" + username + "' allow filtering").ToList();
                     }
                     catch { }
 
@@ -123,6 +176,19 @@ namespace ConectaTEC.Controllers
                 return RedirectToAction("../Account/Login");
             }
             
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Publicar(TweetsModel model, string returnUrl)
+        {
+            try
+            {
+                session.Execute("insert into tweets (tweet_id, time, body, username) values (uuid(), toTimestamp(now()), '" + model.body + "', '" + Session["active_user"] + "' )");
+            }
+            catch { }
+            return RedirectToAction("Index");
         }
     }
 }

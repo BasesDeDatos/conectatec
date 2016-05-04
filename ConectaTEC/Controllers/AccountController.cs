@@ -118,6 +118,7 @@ namespace ConectaTEC.Controllers
             {
                 case 1: //Sucess
                     Session["active_user"] = userList[0]["username"];
+                    Session["active_name"] = userList[0]["name"];
                     return RedirectToLocal(returnUrl);
                 case 0:
                 default:
